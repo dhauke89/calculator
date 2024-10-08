@@ -9,6 +9,7 @@ let operationComplete = false;
 let currentError = false;
 let lastButtonType = "";
 
+// Updates the calculator display
 function updateDisplay(){
 
     display.textContent = currentEntry;
@@ -36,10 +37,12 @@ buttonsContainer.addEventListener("click", function(e){
                         secondOperand = currentEntry;
                         firstOperand = runOperation();
                         currentOperator = e.target.textContent;
+                        currentEntry = firstOperand;
                     }
                     break;
                 };
             case "equals":
+                // Handles the '=' button press, performing the calculation
                 if(currentError){
                     break;
                 }else if(firstOperand === ""){
@@ -52,9 +55,11 @@ buttonsContainer.addEventListener("click", function(e){
                         currentEntry = result;
                         updateDisplay();
                         currentOperator = "";
+                    }else if(currentOperator = ""){
+                        handleError("nullOperator");
+                        return;
                     }else{
                         handleError("null");
-                        return;
                     }
                     break;
                 };
@@ -70,6 +75,7 @@ buttonsContainer.addEventListener("click", function(e){
                 }
                 break;
             default:
+                // Handles the number and decimal button presses
                 if(currentError){
                     break;
                 }else{
@@ -90,6 +96,7 @@ buttonsContainer.addEventListener("click", function(e){
     }
 })
 
+// Handles different error scenarios
 function handleError(errorType){
     switch(errorType){
         case "NaN":
@@ -101,11 +108,14 @@ function handleError(errorType){
         case "null":
             currentEntry = "ERROR: null"
             break;
+        case "nullOperator":
+            currentEntry = "ERROR: nullOperator";
     };
     updateDisplay();
     currentError = true;
 }
 
+// Performs the arithmetic operation based on the current operator and operands
 function runOperation(){
     let solution = ""
 
